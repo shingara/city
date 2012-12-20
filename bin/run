@@ -1,0 +1,11 @@
+#! /usr/bin/env ruby
+require 'city/god'
+city = City::God.new
+
+begin
+  city.async.run
+  sleep
+rescue Interrupt
+  city.terminate
+  exit(0)
+end
