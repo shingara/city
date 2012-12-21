@@ -26,13 +26,11 @@ module City
 
     def duplicate
       info("#{self} => give birth")
-      publish(:birth, self.name)
-      #info god
-      # child = god.add_person
+      publish('birth', @name)
     end
 
     def to_s
-      "Person #{self.name}"
+      "Person #{@name}"
     end
   end
 end
