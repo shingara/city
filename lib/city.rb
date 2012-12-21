@@ -7,3 +7,4 @@ end
 require 'city/position'
 require 'city/person'
 require 'city/god'
+require 'city/puppet_master'

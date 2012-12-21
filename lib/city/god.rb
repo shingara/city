@@ -3,19 +3,33 @@ require 'virtus'
 
 module City
   class God
-    include Virtus
     include Celluloid
     include Celluloid::Logger
-     include Celluloid::Notifications
+    include Celluloid::Notifications
 
-    attribute :people, Array[City::Person]
+    def initialize(puppet_master)
+      # @env = DataMapper::Environment.new
+
+      # env.build(Person, :memory) do
+      #   key :id
+      #     has 0..1, :position, Position
+      # end
+
+      # @env.setup(:memory)
+      # @env.finalize
+      @puppet_master = puppet_master
+      @people = []
+    end
+    attr_reader :people
 
     trap_exit :actor_died
 
     def run
       @subscriber ||= subscribe('birth', :new_birth)
       add_person if people.empty?
-      people.each { |person| person.action }
+      people.each { |person|
+        @puppet_master.async.action(person)
+      }
       after(1) {
         info("new turn")
         run
@@ -27,7 +41,7 @@ module City
     end
 
     def add_person(parent=nil)
-      info "new person created"
+      #info "new person created"
       self.people << Person.new(
         :name => "man-#{people.count}",
         :position => Position.new(
@@ -39,7 +53,7 @@ module City
     end
 
     def stop
-      people.each{ |person| person.terminate }
+      @puppet_master.terminate
       terminate
     end
 

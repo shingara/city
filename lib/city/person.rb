@@ -4,7 +4,6 @@ require 'celluloid'
 module City
   class Person
     include Virtus
-    include Celluloid
     include Celluloid::Logger
     include Celluloid::Notifications
 
@@ -15,7 +14,7 @@ module City
 
     def move(count)
       position.change(count)
-      info("#{self} => move to #{position}")
+      #info("#{self} => move to #{position}")
     end
 
     def action
@@ -25,7 +24,7 @@ module City
     end
 
     def duplicate
-      info("#{self} => give birth")
+      #info("#{self} => give birth")
       publish('birth', @name)
     end
 

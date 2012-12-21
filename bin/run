@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 require 'city'
-city = City::God.new
+puppet_master = City::PuppetMaster.pool(size: 30)
+city = City::God.new(puppet_master)
 
 begin
   city.async.run
